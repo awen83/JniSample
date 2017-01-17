@@ -1,0 +1,45 @@
+#define LOG_TAG "TestJni_jni"
+
+#include "Jnilogger.h"
+#include <stdio.h>
+#include <jni.h>
+#include <string.h>
+
+static int i = 0;
+/*
+ * Class:     com_ffmpeg_FFmpegJni
+ * Method:    init
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_ffmpeg_FFmpegJni_init
+  (JNIEnv * env, jclass thiz) 
+{
+    i = 189;
+    return;
+}
+
+/*
+ * Class:     com_ffmpeg_FFmpegJni
+ * Method:    getInt
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_ffmpeg_FFmpegJni_getInt
+  (JNIEnv * env, jclass thiz) 
+{
+    return i++;
+}
+
+/*
+ * Class:     com_ffmpeg_FFmpegJni
+ * Method:    getVersion
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_ffmpeg_FFmpegJni_getVersion
+  (JNIEnv * env, jclass thiz)
+  {
+  	char str[25];
+  	sprintf(str, "%d", 99);
+  	LOGE(">>>>>>>>>>Java_com_ffmpeg_FFmpegJni_getVersion");
+  	return env->NewStringUTF(str);
+  	
+  }

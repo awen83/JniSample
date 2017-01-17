@@ -1,0 +1,122 @@
+apply plugin: 'com.android.model.application'
+
+model {
+    android {
+        compileSdkVersion 23
+        buildToolsVersion "23.0.3"
+
+        defaultConfig.with {
+            applicationId "com.ffmpeg"
+            minSdkVersion.apiLevel = 8
+            targetSdkVersion.apiLevel = 9
+            versionCode = 1
+            versionName = "1.0"
+        }
+
+        compileOptions.with {
+            sourceCompatibility = JavaVersion.VERSION_1_7
+            targetCompatibility = JavaVersion.VERSION_1_7
+        }
+    }
+
+    android.ndk {
+        moduleName = "ffmpegjni"
+
+//            cppFlags.add("-DANDROID_NDK")
+//            cppFlags.add("-D_DEBUG")
+//        ldLibs.add("libffmpeg")
+        ldLibs.add("log")
+        ldLibs.add("jnigraphics")
+//        stl = "stlport_static"
+//        CFlags.add("-DCUSTOM_DEFINE")
+//
+//        cppFlags.add("-DLIBYUV_NEON")
+//        CFlags.add("-DLIBYUV_NEON")
+//        CFlags.add("-std=c99")
+//
+//        CFlags.add("-Wdeprecated-declarations")
+//        cppFlags.add("-Wdeprecated-declarations")
+//
+//        CFlags  += "-I${file("src/main/jni/ijkmedia/ijkyuv/include")}".toString()
+//        CFlags  += "-I${file("src/main/jni/ijkmedia")}".toString()
+//        CFlags  += "-I${file("src/main/ffmpeg-armv7a")}".toString()
+//
+//        cppFlags  += "-I${file("src/main/jni/ijkmedia")}".toString()
+//        cppFlags  += "-I${file("src/main/ffmpeg-armv7a")}".toString()
+//        cppFlags  += "-I${file("src/main/jni/ijkmedia/ijkyuv/include")}".toString()
+//
+//        ldLibs    += ["android",  "talffmpeg", "log","OpenSLES"]
+
+//        cppFlags += "-std=c++11"
+//        cppFlags += "-fexceptions"
+//        cppFlags += "-I${file("src/main/jni//include")}".toString()
+//        ldLibs += ["android", "log"]
+//        stl = "gnustl_shared"
+
+        /*
+         * Other ndk flags configurable here are
+         * cppFlags.add("-fno-rtti")
+         * cppFlags.add("-fno-exceptions")
+         * ldLibs.addAll(["android", "log"])
+         * stl       = "system"
+         */
+    }
+
+    android.buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles.add(file('proguard-android.txt'))
+        }
+
+        debug {
+            debuggable = true
+            ndk.with {
+                debuggable = true
+            }
+        }
+    }
+
+    android.productFlavors {
+        create("arm") {
+            ndk.abiFilters.add("armeabi")
+        }
+        create("arm7") {
+            ndk.abiFilters.add("armeabi-v7a")
+        }
+//        create("arm8") {
+//            ndk.abiFilters.add("arm64-v8a")
+//        }
+//        create("x86") {
+//            ndk.abiFilters.add("x86")
+//        }
+//        create("x86-64") {
+//            ndk.abiFilters.add("x86_64")
+//        }
+//        create("mips") {
+//            ndk.abiFilters.add("mips")
+//        }
+//        create("mips-64") {
+//            ndk.abiFilters.add("mips64")
+//        }
+        // To include all cpu architectures, leaves abiFilters empty
+//        create("all")
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+//    testCompile 'junit:junit:4.12'
+}
+
+task clearJar(type: Delete) {
+    delete 'build/libs/ffmpegplayer.jar'
+}
+
+task makeJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', 'ffmpegplayer.jar')
+}
+
+makeJar.dependsOn(clearJar, build)

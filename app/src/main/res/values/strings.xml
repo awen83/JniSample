@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jni</string>
+    <string name="forward">forward</string>
+    <string name="back">back</string>
+    <string name="play">play</string>
+    <string name="pause">pause</string>
+    <string name="select_file">select_file</string>
+    <string name="exit">exit</string>
+    
+
+</resources>
